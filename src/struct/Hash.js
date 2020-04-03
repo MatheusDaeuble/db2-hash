@@ -51,4 +51,26 @@ export default class Hash {
     })
   }
 
+  add = (pageKey, tupleKey) =>
+    this.table[this.function(tupleKey)].add(pageKey, tupleKey);
+
+  get = (tupleKey) =>
+    this.table[this.function(tupleKey)].get(tupleKey);
+
+  function = (key) => key % this.prime;
+
+  generatePrimeNumber = (number) => {
+    let currentNumber=number;
+    while (true) {
+      if(this.isPrime(currentNumber)) return currentNumber;
+      currentNumber++;
+    }
+  }
+
+  isPrime = number => {
+    for(let i = 2; i < number; i++)
+      if (number % i === 0) return false;
+    return number > 1;
+  }
+
 }

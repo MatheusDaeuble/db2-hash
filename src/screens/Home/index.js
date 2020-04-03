@@ -13,17 +13,22 @@ const Home = () => {
   const [search, setSearch] = useState('');
 
   const table = useMemo(() => new Table(), []);
+  console.log(table)
   const tuples = useMemo(() => table.content, []);
+  console.log(tuples)
   const disk = useMemo(() => new Disk(tuples), []);
+  console.log(disk)
   const pages = useMemo(() => formatObjectToArray(disk.content), []);
+  console.log(pages)
+
   const tuplesFromPage = useMemo(() =>
-    pageKeySelected && 
-    formatObjectToArray(disk.content[pageKeySelected].content), 
+    pageKeySelected &&
+    formatObjectToArray(disk.content[pageKeySelected].content),
     [pageKeySelected]
   );
-  
+
   const doSearch = () => {
-    parseInt(search) > 0 && 
+    parseInt(search) > 0 &&
     parseInt(search) <= tuples.length &&
     openModal(disk.hash.get(search));
   };
@@ -64,13 +69,13 @@ const Home = () => {
           }}
         />
       </View>
-      { showModal && 
-        <ModalList 
+      { showModal &&
+        <ModalList
           pageKey={pageKeySelected}
           close={() => setShowModal(false)}
           tuples={
             search ? [{ key: search, value: disk.get(search)}] : tuplesFromPage
-          } 
+          }
         />
       }
     </>
