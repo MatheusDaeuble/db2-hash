@@ -33,6 +33,9 @@ const Home = () => {
     setShowModal(true);
   };
 
+  disk.hash.overflowRate()
+
+
   return (
     <>
       <View style={styles.background}>
@@ -49,7 +52,7 @@ const Home = () => {
           </View>
           <View style={styles.infoContainer}>
             <Text style={styles.info}>Taxa de colisões: TODO</Text>
-            <Text style={styles.info}>Taxa de overflow: TODO</Text>
+            <Text style={styles.info}>Taxa de overflow: {disk.hash.overflowRate() + '%'}</Text>
             <Text style={styles.info}>Numero de acessos ao disco: TODO</Text>
           </View>
         </View>

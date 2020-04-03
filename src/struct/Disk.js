@@ -16,13 +16,12 @@ export default class Disk {
 
   getAllPageKeys = () => Object.keys(this.content);
 
-  addAllInHash = () => {
+  addAllInHash = () => 
     this.getAllPageKeys().map(pageKey => 
       this.content[pageKey].getAllTupleKeys().map(tupleKey =>
         this.hash.add(pageKey, tupleKey)
       )
     )
-  }
 
   fillPage = (tuples) => {
     createPageKeys(PAGE_SIZE);
@@ -33,7 +32,6 @@ export default class Disk {
       pages[key] = new Page(t.splice(t.length - PAGE_SIZE, PAGE_SIZE), key);
     }
     return pages;
-
   }
 
 }
