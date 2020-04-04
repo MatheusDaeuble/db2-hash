@@ -11,10 +11,10 @@ export default class Hash {
 
   function = (key) => key % this.prime;
 
-  add = (pageKey, tupleKey) => 
+  add = (pageKey, tupleKey) =>
     this.table[this.function(tupleKey)].add(pageKey, tupleKey);
 
-  get = (tupleKey) => 
+  get = (tupleKey) =>
     this.table[this.function(tupleKey)].get(tupleKey);
 
   generateHashTable = (tuples) => {
@@ -34,13 +34,15 @@ export default class Hash {
 
   keys = () => Object.keys(this.table)
 
+  buckets = () => this.keys().map(key => this.table[key])
+
   overflowRate = () => {
-    const overflowCount = this.overflowCount() 
+    const overflowCount = this.overflowCount()
     return (overflowCount/(this.keys().length + overflowCount) * 100).toFixed(2)
   }
 
-  overflowCount = () => 
-    this.keys().reduce((count, key) =>  
+  overflowCount = () =>
+    this.keys().reduce((count, key) =>
       parseInt(count) + parseInt(this.table[key].overflowCount()))
 
   showBucketsSize = () => {
@@ -51,11 +53,11 @@ export default class Hash {
     })
   }
 
-  add = (pageKey, tupleKey) =>
-    this.table[this.function(tupleKey)].add(pageKey, tupleKey);
+  // add = (pageKey, tupleKey) =>
+  //   this.table[this.function(tupleKey)].add(pageKey, tupleKey);
 
-  get = (tupleKey) =>
-    this.table[this.function(tupleKey)].get(tupleKey);
+  // get = (tupleKey) =>
+  //   this.table[this.function(tupleKey)].get(tupleKey);
 
   function = (key) => key % this.prime;
 
@@ -73,4 +75,19 @@ export default class Hash {
     return number > 1;
   }
 
+  colisionRate = () => {
+    return this.colisionRateCalc()
+  }
+
+  colisionRateByBucket = () => this.calcColisionRateByBucket()
+
+  colisionRateCalc = () => {
+    const colisionRateByBucket = this.calcColisionRateByBucket()
+    return ((colisionRateByBucket.reduce((sum, bucketRate) => sum + bucketRate) / colisionRateByBucket.length ) * 100).toFixed(2)
+  }
+
+  calcColisionRateByBucket = () =>
+    this.keys().map(key => {
+      return parseInt(this.table[key].colisionCount)/parseInt(this.table[key].size())
+    })
 }

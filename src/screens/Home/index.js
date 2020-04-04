@@ -1,7 +1,7 @@
 import React, {useState, useMemo} from 'react';
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import ModalList from '../../components/ModalList';
-import List from '../../components/List';
+import List, { BucketList } from '../../components/List';
 import Disk from '../../struct/Disk';
 import Table from '../../struct/Table';
 import {formatObjectToArray} from '../../utils/fomart';
@@ -10,16 +10,22 @@ import styles from './styles';
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
   const [pageKeySelected, setPageKeySelected] = useState(null);
+  const [bucketSelected, setBucketSelected] = useState({
+    key: null,
+    tuples: []
+  });
+  const [listTuples, setListTuples] = useState({
+    whichData: '',
+    key: null,
+    tuples: []
+  })
   const [search, setSearch] = useState('');
 
   const table = useMemo(() => new Table(), []);
-  console.log(table)
   const tuples = useMemo(() => table.content, []);
-  console.log(tuples)
   const disk = useMemo(() => new Disk(tuples), []);
-  console.log(disk)
   const pages = useMemo(() => formatObjectToArray(disk.content), []);
-  console.log(pages)
+  const buckets = useMemo(() => disk.hash.buckets(), []);
 
   const tuplesFromPage = useMemo(() =>
     pageKeySelected &&
@@ -33,13 +39,28 @@ const Home = () => {
     openModal(disk.hash.get(search));
   };
 
-  const openModal = (pageKey) => {
-    setPageKeySelected(pageKey);
+  const openModal = (key, whichData = 'pages') => {
+    switch (whichData) {
+      case 'pages':
+        setPageKeySelected(key);
+        setListTuples({
+          whichData,
+          key,
+          tuples: formatObjectToArray(disk.content[key].content)
+        });
+        break;
+      case 'buckets':
+        setListTuples({
+          whichData,
+          key,
+          tuples: buckets.filter(bucket => bucket.key === key)[0].tuples()
+        });
+        break;
+      default:
+        break;
+    }
     setShowModal(true);
   };
-
-  disk.hash.overflowRate()
-
 
   return (
     <>
@@ -56,7 +77,7 @@ const Home = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.infoContainer}>
-            <Text style={styles.info}>Taxa de colisões: TODO</Text>
+            <Text style={styles.info}>Taxa de colisões: {disk.hash.colisionRate() + '%'}</Text>
             <Text style={styles.info}>Taxa de overflow: {disk.hash.overflowRate() + '%'}</Text>
             <Text style={styles.info}>Numero de acessos ao disco: TODO</Text>
           </View>
@@ -68,13 +89,21 @@ const Home = () => {
             openModal(tupleKey);
           }}
         />
+        {/* <BucketList
+          buckets={buckets}
+          onSelect={bucketKey => {
+            setSearch('');
+            openModal(bucketKey, 'buckets');
+          }}
+        /> */}
       </View>
       { showModal &&
         <ModalList
-          pageKey={pageKeySelected}
+          key={listTuples.key}
           close={() => setShowModal(false)}
+          whichData={listTuples.whichData}
           tuples={
-            search ? [{ key: search, value: disk.get(search)}] : tuplesFromPage
+            search ? [{ key: search, value: disk.get(search)}] : listTuples.tuples
           }
         />
       }

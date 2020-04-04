@@ -1,13 +1,30 @@
 import React from 'react';
 import { FlatList } from 'react-native';
-import TupleItem from './Item';
+import TupleItem, { BucketItem } from './Item';
 
-const List = ({ tuples }) => 
+const List = ({ tuples }) =>
   <FlatList
     data={tuples}
     initialNumToRender={20}
     keyExtractor={tuple => tuple.key.toString()}
-    renderItem={ ({item}) => <TupleItem item={item}/> }
+    renderItem={({ item }) => <TupleItem item={item} />}
   />
 
+
+const BucketList = ({ tuples }) =>
+  <FlatList
+    data={tuples}
+    initialNumToRender={20}
+    keyExtractor={(item, index) => {
+      return index.toString()
+    }}
+    renderItem={({ item }, index) => (
+      <>
+      {console.log(item, index)}
+      {/* <BucketItem item={item} /> */}
+      </>
+      )}
+  />
+
+export { BucketList }
 export default List;
