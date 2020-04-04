@@ -22,7 +22,6 @@ const Home = () => {
     tuples: []
   })
 
-
   const table = useMemo(() => new Table(), []);
   const tuples = useMemo(() => table.content, []);
   const disk = useMemo(() => new Disk(tuples), []);
@@ -38,16 +37,10 @@ const Home = () => {
     }
   })
 
-  const tuplesFromPage = useMemo(() =>
-    pageKeySelected &&
-    formatObjectToArray(disk.content[pageKeySelected].content),
-    [pageKeySelected]
-  );
-
   const doSearch = () => {
     if (parseInt(search) > 0 && parseInt(search) <= tuples.length) {
       const bucket = disk.hash.get(search)
-      openModal(bucket.pageKey);
+      openModal(bucket.pageKey, listData.typeData);
       setAccessCost(bucket.accessCost);
     }
   };
@@ -55,18 +48,21 @@ const Home = () => {
   const openModal = (key, whichData = 'pages') => {
     switch (whichData) {
       case 'pages':
-        setPageKeySelected(key);
         setListTuples({
           whichData,
           key,
-          tuples: formatObjectToArray(disk.content[key].content)
+          tuples:  search ? 
+            [{ key: search, value: disk.get(search) }] : 
+            formatObjectToArray(disk.content[key].content)
         });
         break;
       case 'buckets':
         setListTuples({
           whichData,
           key,
-          tuples: buckets.filter(bucket => bucket.key === key)[0].tuplesPages()
+          tuples: search ? 
+          [disk.hash.get(search)] :
+          buckets.find(bucket => bucket.key === key).tuplesPages()
         });
         break;
       default:
@@ -101,14 +97,13 @@ const Home = () => {
         setListData({
           typeData,
           data: tuples,
-          selectFunction: () => (console.log())
+          selectFunction: () => {}
         })
         break;
       default:
         break;
     }
   }
-
 
   return (
     <>
@@ -161,9 +156,7 @@ const Home = () => {
           dataKey={listTuples.key}
           close={() => setShowModal(false)}
           whichData={listTuples.whichData}
-          tuples={
-            search ? [{ key: search, value: disk.get(search) }] : listTuples.tuples
-          }
+          tuples={listTuples.tuples}
         />
       }
     </>

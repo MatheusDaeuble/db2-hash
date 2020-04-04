@@ -49,7 +49,7 @@ export default class Bucket {
 
   tuplesPages = () => {
     const indexes = this.tuples()
-    return this.pages().map((page, index) => ({ page, index: indexes[index]}))
+    return this.pages().map((pageKey, index) => ({ pageKey, tuplaKey: indexes[index]}))
   }
 
   collisionCount = () => this.count - 1
