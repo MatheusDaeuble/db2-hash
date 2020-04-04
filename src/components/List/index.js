@@ -1,33 +1,36 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
 import styles from './styles'
-import PageItem, { BucketItem } from './Item'
+import PageItem, { BucketItem, TableItem } from './Item'
 
-const List = ({ pages, onSelect }) =>
+const List = ({ data, onSelect, typeData }) =>
   <View style={styles.listContainer}>
     <FlatList
-      data={pages}
+      data={data}
       initialNumToRender={20}
       style={styles.list}
-      keyExtractor={(page) => page.key.toString()}
-      renderItem={({ item }) => <PageItem item={item} onSelect={onSelect} />}
+      keyExtractor={(data) => data.key.toString()}
+      renderItem={({ item }) => (
+        <>
+          {
+            (() => {
+              switch (typeData) {
+                case 'buckets':
+                  return <BucketItem item={item} onSelect={onSelect} />
+                case 'pages':
+                  return <PageItem item={item} onSelect={onSelect} />
+                case 'table':
+                  return <TableItem item={item} onSelect={onSelect} />
+                default:
+                  return ''
+              }
+            })()
+          }
+        </>
+      )}
       numColumns={3}
       columnWrapperStyle={styles.columns}
     />
   </View>
 
-const BucketList = ({ buckets, onSelect }) =>
-  <View style={styles.listContainer}>
-    <FlatList
-      data={buckets}
-      initialNumToRender={20}
-      style={styles.list}
-      keyExtractor={(page) => page.key.toString()}
-      renderItem={({ item }) => <BucketItem item={item} onSelect={onSelect} />}
-      numColumns={3}
-      columnWrapperStyle={styles.columns}
-    />
-  </View>
-
-export { BucketList }
 export default List;

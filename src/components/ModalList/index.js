@@ -15,15 +15,25 @@ const ModalList = ({ tuples, close, key, whichData }) =>
           <Text style={styles.close}>x</Text>
           {console.log(tuples)}
         </TouchableOpacity>
-        {whichData === 'buckets'
-          ? <>
-            <Text style={styles.page}>Bucket: {key}</Text>
-            <BucketList tuples={tuples} />
-          </>
-          : <>
-            <Text style={styles.page}>Page: {key}</Text>
-            <List tuples={tuples} />
-          </>}
+        {
+          (() => {
+            switch (whichData) {
+              case 'buckets':
+                return <>
+                  <Text style={styles.page}>Bucket: {key}</Text>
+                  <BucketList tuples={tuples} />
+                </>
+                break;
+              case 'pages':
+                return <>
+                  <Text style={styles.page}>Page: {key}</Text>
+                  <List tuples={tuples} />
+                </>
+              default:
+                break;
+            }
+          })()
+        }
       </View>
     </View>
   </Modal>

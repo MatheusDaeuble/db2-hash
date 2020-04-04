@@ -1,10 +1,10 @@
-import React, {useState, useMemo} from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import React, { useState, useMemo } from 'react';
+import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import ModalList from '../../components/ModalList';
-import List, { BucketList } from '../../components/List';
+import List from '../../components/List';
 import Disk from '../../struct/Disk';
 import Table from '../../struct/Table';
-import {formatObjectToArray} from '../../utils/fomart';
+import { formatObjectToArray } from '../../utils/fomart';
 import styles from './styles';
 
 const Home = () => {
@@ -19,6 +19,7 @@ const Home = () => {
     key: null,
     tuples: []
   })
+
   const [search, setSearch] = useState('');
 
   const table = useMemo(() => new Table(), []);
@@ -26,6 +27,15 @@ const Home = () => {
   const disk = useMemo(() => new Disk(tuples), []);
   const pages = useMemo(() => formatObjectToArray(disk.content), []);
   const buckets = useMemo(() => disk.hash.buckets(), []);
+
+  const [listData, setListData] = useState({
+    typeData: 'pages',
+    data: pages,
+    selectFunction: tupleKey => {
+      setSearch('');
+      openModal(tupleKey, 'pages');
+    }
+  })
 
   const tuplesFromPage = useMemo(() =>
     pageKeySelected &&
@@ -35,8 +45,8 @@ const Home = () => {
 
   const doSearch = () => {
     parseInt(search) > 0 &&
-    parseInt(search) <= tuples.length &&
-    openModal(disk.hash.get(search));
+      parseInt(search) <= tuples.length &&
+      openModal(disk.hash.get(search));
   };
 
   const openModal = (key, whichData = 'pages') => {
@@ -62,6 +72,41 @@ const Home = () => {
     setShowModal(true);
   };
 
+  const showData = (typeData) => {
+    switch (typeData) {
+      case 'pages':
+        setListData({
+          typeData,
+          data: pages,
+          selectFunction: tupleKey => {
+            setSearch('');
+            openModal(tupleKey, 'pages');
+          }
+        })
+        break;
+      case 'buckets':
+        setListData({
+          typeData,
+          data: buckets,
+          selectFunction: bucketKey => {
+            setSearch('');
+            openModal(bucketKey, 'buckets');
+          }
+        })
+        break;
+      case 'table':
+        setListData({
+          typeData,
+          data: tuples,
+          selectFunction: () => (console.log())
+        })
+        break;
+      default:
+        break;
+    }
+  }
+
+
   return (
     <>
       <View style={styles.background}>
@@ -80,30 +125,41 @@ const Home = () => {
             <Text style={styles.info}>Taxa de colisões: {disk.hash.colisionRate() + '%'}</Text>
             <Text style={styles.info}>Taxa de overflow: {disk.hash.overflowRate() + '%'}</Text>
             <Text style={styles.info}>Numero de acessos ao disco: TODO</Text>
+            <View style={styles.buttonsContainer}>
+              <Button
+                onPress={() => showData('pages')}
+                title="Pages"
+                color="#841584"
+                accessibilityLabel="Pages"
+              />
+              <Button
+                onPress={() => showData('buckets')}
+                title="Buckets"
+                color="#841584"
+                accessibilityLabel="Buckets"
+              />
+              <Button
+                onPress={() => showData('table')}
+                title="Table"
+                color="#841584"
+                accessibilityLabel="Table"
+              />
+            </View>
           </View>
         </View>
-        {/* <List
-          pages={pages}
-          onSelect={tupleKey => {
-            setSearch('');
-            openModal(tupleKey);
-          }}
-        /> */}
-        <BucketList
-          buckets={buckets}
-          onSelect={bucketKey => {
-            setSearch('');
-            openModal(bucketKey, 'buckets');
-          }}
+        <List
+          data={listData.data}
+          typeData={listData.typeData}
+          onSelect={bucketKey => listData.selectFunction(bucketKey)}
         />
       </View>
-      { showModal &&
+      {showModal &&
         <ModalList
           key={listTuples.key}
           close={() => setShowModal(false)}
           whichData={listTuples.whichData}
           tuples={
-            search ? [{ key: search, value: disk.get(search)}] : listTuples.tuples
+            search ? [{ key: search, value: disk.get(search) }] : listTuples.tuples
           }
         />
       }

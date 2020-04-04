@@ -1,49 +1,60 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { metrics, colors, general } from '../../styles'
 
 const styles = StyleSheet.create({
 
-  background:{
+  background: {
     flex: 1,
-    alignItems:'center',
-    justifyContent:'space-between',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: colors.star,
-    paddingTop:80
+    paddingTop: 80
   },
 
   container: {
-    padding:10
+    padding: 10
   },
 
-  searchContainer:{
-    height:50, 
-    width:'100%', 
-    flexDirection:'row'
+  searchContainer: {
+    height: 50,
+    width: '100%',
+    flexDirection: 'row'
   },
 
-  searchInput:{
-    flex:1,
-    backgroundColor:'white',  
-    borderRadius:5
+  searchInput: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderRadius: 5
   },
 
-  searchButton:{
-    backgroundColor:'white', 
-    marginLeft:10, 
-    paddingHorizontal:10, 
-    justifyContent:'center', 
-    borderRadius:5
+  searchButton: {
+    backgroundColor: 'white',
+    marginLeft: 10,
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    borderRadius: 5
   },
 
-  infoContainer:{
-    marginVertical:20
+  infoContainer: {
+    marginVertical: 20
   },
 
   info: {
-    padding:3,
-    fontSize:18,
-    color:colors.darker,
-  }
+    padding: 3,
+    fontSize: 18,
+    color: colors.darker,
+  },
+
+  buttonsContainer: {
+    marginVertical: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+
+  // button: {
+  //   border
+  // }
 });
 
 export default styles;
