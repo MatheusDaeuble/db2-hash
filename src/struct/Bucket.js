@@ -1,7 +1,7 @@
 import { BUCKET_SIZE } from '../utils/constants'
 
 export default class Bucket {
-  constructor (key) {
+  constructor(key) {
     this.key = key;
     this.content = {};
     this.space = BUCKET_SIZE;
@@ -19,13 +19,13 @@ export default class Bucket {
   }
 
   get = (tuplaKey) =>
-  this.content[tuplaKey] ?
-    this.content[tuplaKey] :
-    this.bucketOverflow.get(tuplaKey)
+    this.content[tuplaKey] ?
+      this.content[tuplaKey] :
+      this.bucketOverflow.get(tuplaKey)
 
   size = () => Object.keys(this.content).length;
 
-  teste = () => {}//console.log(this.overFlowBuckets)
+  teste = () => { }//console.log(this.overFlowBuckets)
 
   checkSpace = () => this.count < this.space
 
@@ -38,7 +38,7 @@ export default class Bucket {
     const name = typeof (this.key) == 'number' ?
       `${this.key}_overflow_1` :
       `${this.key}_overflow_${parseInt(this.key.split('_')[2]) + 1}`
-    this.bucketOverflow = new Bucket (name);
+    this.bucketOverflow = new Bucket(name);
     this.bucketOverflow.add(pageKey, tupleKey)
   }
 
@@ -48,8 +48,15 @@ export default class Bucket {
 
   tuples = () => Object.keys(this.content)
 
+  pages = () => Object.values(this.content)
+
+  tuplesPages = () => {
+    const indexes = this.tuples()
+    return this.pages().map((page, index) => ({ page, index: indexes[index]}))
+  }
+
   addCollision = () => {
-    if(this.count > 1)
+    if (this.count > 1)
       this.colisionCount++;
   }
 

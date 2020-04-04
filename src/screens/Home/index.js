@@ -53,7 +53,7 @@ const Home = () => {
         setListTuples({
           whichData,
           key,
-          tuples: buckets.filter(bucket => bucket.key === key)[0].tuples()
+          tuples: buckets.filter(bucket => bucket.key === key)[0].tuplesPages()
         });
         break;
       default:
@@ -82,20 +82,20 @@ const Home = () => {
             <Text style={styles.info}>Numero de acessos ao disco: TODO</Text>
           </View>
         </View>
-        <List
+        {/* <List
           pages={pages}
           onSelect={tupleKey => {
             setSearch('');
             openModal(tupleKey);
           }}
-        />
-        {/* <BucketList
+        /> */}
+        <BucketList
           buckets={buckets}
           onSelect={bucketKey => {
             setSearch('');
             openModal(bucketKey, 'buckets');
           }}
-        /> */}
+        />
       </View>
       { showModal &&
         <ModalList

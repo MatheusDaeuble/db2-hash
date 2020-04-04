@@ -18,12 +18,7 @@ const BucketList = ({ tuples }) =>
     keyExtractor={(item, index) => {
       return index.toString()
     }}
-    renderItem={({ item }, index) => (
-      <>
-      {console.log(item, index)}
-      {/* <BucketItem item={item} /> */}
-      </>
-      )}
+    renderItem={({ item }) => <BucketItem item={item} />}
   />
 
 export { BucketList }
