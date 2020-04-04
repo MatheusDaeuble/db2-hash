@@ -8,14 +8,12 @@ export default class Bucket {
     this.space = BUCKET_SIZE;
     this.bucketOverflow = null;
     this.count = 0;
-    this.collisionCount = 0;
   }
 
   add = (pageKey, tupleKey) => {
     if (this.checkSpace()) {
       this.content[tupleKey] = pageKey;
       this.count++;
-      this.addCollision()
     } else this.overflow(pageKey, tupleKey);
   }
 
@@ -54,10 +52,7 @@ export default class Bucket {
     return this.pages().map((page, index) => ({ page, index: indexes[index]}))
   }
 
-  addCollision = () => {
-    if (this.count > 1)
-      this.collisionCount++;
-  }
+  collisionCount = () => this.count - 1
 
   accessCost = () => this.level + 1
 }

@@ -61,6 +61,6 @@ export default class Hash {
 
   calcCollisionRateByBucket = () =>
     this.keys().map(key => 
-      parseInt(this.table[key].collisionCount)/parseInt(this.table[key].size())
+      parseInt(this.table[key].collisionCount())/parseInt(this.table[key].size())
     )
 }

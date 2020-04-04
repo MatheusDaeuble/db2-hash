@@ -13,7 +13,6 @@ const ModalList = ({ tuples, close, dataKey, whichData }) =>
       <View style={styles.container}>
         <TouchableOpacity style={styles.closeContainer} onPress={close}>
           <Text style={styles.close}>x</Text>
-          {console.log(tuples)}
         </TouchableOpacity>
         {
           (() => {
