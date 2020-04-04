@@ -12,7 +12,7 @@ export default class Disk {
   }
   
   add = (pageKey, tuple) => this.content[pageKey].add(tuple);
-  get = (tupleKey) => this.content[this.hash.get(tupleKey)].get(tupleKey);
+  get = (tupleKey) => this.content[this.hash.get(tupleKey).pageKey].get(tupleKey);
 
   getAllPageKeys = () => Object.keys(this.content);
 

@@ -1,9 +1,7 @@
 export const generatePrimeNumber = (number) => {
-  let currentNumber=number;
-  while (true) {
-    if(this.isPrime(currentNumber)) return currentNumber;
-    currentNumber++;
-  }
+  while (this.isPrime(number)) 
+    number++;
+  return number
 }
 
 isPrime = number => {

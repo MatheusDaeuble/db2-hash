@@ -10,6 +10,8 @@ import styles from './styles';
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
   const [pageKeySelected, setPageKeySelected] = useState(null);
+  const [accessCost, setAccessCost] = useState('0');
+  const [search, setSearch] = useState('');
   const [bucketSelected, setBucketSelected] = useState({
     key: null,
     tuples: []
@@ -20,7 +22,6 @@ const Home = () => {
     tuples: []
   })
 
-  const [search, setSearch] = useState('');
 
   const table = useMemo(() => new Table(), []);
   const tuples = useMemo(() => table.content, []);
@@ -44,9 +45,11 @@ const Home = () => {
   );
 
   const doSearch = () => {
-    parseInt(search) > 0 &&
-      parseInt(search) <= tuples.length &&
-      openModal(disk.hash.get(search));
+    if (parseInt(search) > 0 && parseInt(search) <= tuples.length) {
+      const bucket = disk.hash.get(search)
+      openModal(bucket.pageKey);
+      setAccessCost(bucket.accessCost);
+    }
   };
 
   const openModal = (key, whichData = 'pages') => {
@@ -122,9 +125,9 @@ const Home = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.infoContainer}>
-            <Text style={styles.info}>Taxa de colisões: {disk.hash.colisionRate() + '%'}</Text>
+            <Text style={styles.info}>Taxa de colisões: {disk.hash.collisionRate() + '%'}</Text>
             <Text style={styles.info}>Taxa de overflow: {disk.hash.overflowRate() + '%'}</Text>
-            <Text style={styles.info}>Numero de acessos ao disco: TODO</Text>
+            <Text style={styles.info}>Numero de acessos ao disco: {accessCost}</Text>
             <View style={styles.buttonsContainer}>
               <Button
                 onPress={() => showData('pages')}
@@ -155,7 +158,7 @@ const Home = () => {
       </View>
       {showModal &&
         <ModalList
-          key={listTuples.key}
+          dataKey={listTuples.key}
           close={() => setShowModal(false)}
           whichData={listTuples.whichData}
           tuples={

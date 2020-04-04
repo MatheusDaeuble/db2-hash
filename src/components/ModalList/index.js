@@ -3,7 +3,7 @@ import { View, Modal, Text, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import List, { BucketList } from './List'
 
-const ModalList = ({ tuples, close, key, whichData }) =>
+const ModalList = ({ tuples, close, dataKey, whichData }) =>
   <Modal
     visible={true}
     transparent={true}
@@ -20,13 +20,12 @@ const ModalList = ({ tuples, close, key, whichData }) =>
             switch (whichData) {
               case 'buckets':
                 return <>
-                  <Text style={styles.page}>Bucket: {key}</Text>
+                  <Text style={styles.page}>Bucket: {dataKey}</Text>
                   <BucketList tuples={tuples} />
                 </>
-                break;
               case 'pages':
                 return <>
-                  <Text style={styles.page}>Page: {key}</Text>
+                  <Text style={styles.page}>Page: {dataKey}</Text>
                   <List tuples={tuples} />
                 </>
               default:

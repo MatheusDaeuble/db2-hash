@@ -53,41 +53,14 @@ export default class Hash {
     })
   }
 
-  // add = (pageKey, tupleKey) =>
-  //   this.table[this.function(tupleKey)].add(pageKey, tupleKey);
-
-  // get = (tupleKey) =>
-  //   this.table[this.function(tupleKey)].get(tupleKey);
-
-  function = (key) => key % this.prime;
-
-  generatePrimeNumber = (number) => {
-    let currentNumber=number;
-    while (true) {
-      if(this.isPrime(currentNumber)) return currentNumber;
-      currentNumber++;
-    }
+  collisionRate = () => {
+    const collisionRateByBucket = this.calcCollisionRateByBucket()
+    return ((collisionRateByBucket.reduce((sum, bucketRate) => 
+      sum + bucketRate) / collisionRateByBucket.length ) * 100).toFixed(2)
   }
 
-  isPrime = number => {
-    for(let i = 2; i < number; i++)
-      if (number % i === 0) return false;
-    return number > 1;
-  }
-
-  colisionRate = () => {
-    return this.colisionRateCalc()
-  }
-
-  colisionRateByBucket = () => this.calcColisionRateByBucket()
-
-  colisionRateCalc = () => {
-    const colisionRateByBucket = this.calcColisionRateByBucket()
-    return ((colisionRateByBucket.reduce((sum, bucketRate) => sum + bucketRate) / colisionRateByBucket.length ) * 100).toFixed(2)
-  }
-
-  calcColisionRateByBucket = () =>
-    this.keys().map(key => {
-      return parseInt(this.table[key].colisionCount)/parseInt(this.table[key].size())
-    })
+  calcCollisionRateByBucket = () =>
+    this.keys().map(key => 
+      parseInt(this.table[key].collisionCount)/parseInt(this.table[key].size())
+    )
 }
