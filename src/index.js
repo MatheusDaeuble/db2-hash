@@ -1,4 +1,5 @@
+import 'react-native-gesture-handler';
 import React from 'react';
-import Home from './screens/Home';
+import Routes from './routes';
 
-export default App = () => <Home/>
+export default App = () => <Routes/>

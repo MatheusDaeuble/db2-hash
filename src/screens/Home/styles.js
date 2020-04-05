@@ -8,11 +8,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: colors.star,
-    paddingTop: 80
+    paddingTop: 20
   },
 
   container: {
-    padding: 10
+    paddingHorizontal: 10
   },
 
   searchContainer: {
@@ -46,15 +46,12 @@ const styles = StyleSheet.create({
   },
 
   buttonsContainer: {
-    marginVertical: 10,
+    marginTop: 20,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around'
   },
-
-  // button: {
-  //   border
-  // }
+  
 });
 
 export default styles;

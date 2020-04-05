@@ -3,14 +3,12 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
 
   listContainer:{
-    marginTop:20,
-    width: '100%',
     flex:1,
+    width: '100%',
     justifyContent:'center',
     alignItems:'center',
     backgroundColor:'white',
-    borderTopRightRadius:20,
-    borderTopLeftRadius:20,
+    borderRadius:20,
   },
 
   list: {

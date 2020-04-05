@@ -1,13 +1,13 @@
-import { BUCKET_SIZE } from '../utils/constants'
 
 export default class Bucket {
-  constructor(key, level = 0) {
+  constructor(key, level = 0, settings) {
     this.key = level ? `${key.toString().split('_')[0]}_${level}` : key; 
     this.level = level;
     this.content = {};
-    this.space = BUCKET_SIZE;
+    this.space = settings.BUCKET_SIZE;
     this.bucketOverflow = null;
     this.count = 0;
+    this.settings = settings
   }
 
   add = (pageKey, tupleKey) => {
@@ -20,6 +20,7 @@ export default class Bucket {
   get = (tuplaKey) =>
     this.content[tuplaKey] ?
       {
+        bucketKey: this.key,
         pageKey: this.content[tuplaKey],
         tuplaKey,
         accessCost: this.accessCost()
@@ -36,7 +37,7 @@ export default class Bucket {
       this.createBucket(pageKey, tupleKey)
 
   createBucket = (pageKey, tupleKey) => {
-    this.bucketOverflow = new Bucket(this.key, this.level + 1);
+    this.bucketOverflow = new Bucket(this.key, this.level + 1, this.settings);
     this.bucketOverflow.add(pageKey, tupleKey)
   }
 

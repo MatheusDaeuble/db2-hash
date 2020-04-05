@@ -1,13 +1,13 @@
-import { PAGE_SIZE, NUMBER_MAX_PAGES }  from '../utils/constants'
 import { createPageKeys, getRandomPageKey } from '../utils/random';
 import Page from './Page';
 import Hash from './Hash'
 
 export default class Disk {
   
-  constructor(tuples) {
+  constructor(tuples, settings) {
+    this.settings = settings;
     this.content = this.fillPage(tuples);
-    this.hash = new Hash(tuples);
+    this.hash = new Hash(tuples, settings);
     this.addAllInHash();
   }
   
@@ -24,12 +24,15 @@ export default class Disk {
     )
 
   fillPage = (tuples) => {
-    createPageKeys(PAGE_SIZE);
+    createPageKeys(this.settings.NUMBER_MAX_PAGES);
     const t = tuples.slice();
     let pages = {};
     while(t.length) {
       const key = getRandomPageKey();
-      pages[key] = new Page(t.splice(t.length - PAGE_SIZE, PAGE_SIZE), key);
+      pages[key] = new Page(
+        t.splice(t.length - this.settings.PAGE_SIZE, this.settings.PAGE_SIZE), 
+        key
+      );
     }
     return pages;
   }

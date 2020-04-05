@@ -3,19 +3,18 @@ import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import ModalList from '../../components/ModalList';
 import List from '../../components/List';
 import Disk from '../../struct/Disk';
+import Menu from '../../components/Menu';
 import Table from '../../struct/Table';
 import { formatObjectToArray } from '../../utils/fomart';
 import styles from './styles';
 
-const Home = () => {
+const Home = ({ navigation }) => {
+
+  const settings = navigation.getParam('settings')
   const [showModal, setShowModal] = useState(false);
   const [pageKeySelected, setPageKeySelected] = useState(null);
   const [accessCost, setAccessCost] = useState('0');
   const [search, setSearch] = useState('');
-  const [bucketSelected, setBucketSelected] = useState({
-    key: null,
-    tuples: []
-  });
   const [listTuples, setListTuples] = useState({
     whichData: '',
     key: null,
@@ -24,7 +23,7 @@ const Home = () => {
 
   const table = useMemo(() => new Table(), []);
   const tuples = useMemo(() => table.content, []);
-  const disk = useMemo(() => new Disk(tuples), []);
+  const disk = useMemo(() => new Disk(tuples, settings), []);
   const pages = useMemo(() => formatObjectToArray(disk.content), []);
   const buckets = useMemo(() => disk.hash.buckets(), []);
 
@@ -39,9 +38,12 @@ const Home = () => {
 
   const doSearch = () => {
     if (parseInt(search) > 0 && parseInt(search) <= tuples.length) {
-      const bucket = disk.hash.get(search)
-      openModal(bucket.pageKey, listData.typeData);
-      setAccessCost(bucket.accessCost);
+      const {pageKey, bucketKey, accessCost } = disk.hash.get(search)
+      openModal(
+        listData.typeData === 'pages' ? pageKey : bucketKey, 
+        listData.typeData
+      );
+      setAccessCost(accessCost);
     }
   };
 
@@ -124,24 +126,24 @@ const Home = () => {
             <Text style={styles.info}>Taxa de overflow: {disk.hash.overflowRate() + '%'}</Text>
             <Text style={styles.info}>Numero de acessos ao disco: {accessCost}</Text>
             <View style={styles.buttonsContainer}>
-              <Button
-                onPress={() => showData('pages')}
-                title="Pages"
-                color="#841584"
-                accessibilityLabel="Pages"
-              />
-              <Button
-                onPress={() => showData('buckets')}
-                title="Buckets"
-                color="#841584"
-                accessibilityLabel="Buckets"
-              />
-              <Button
-                onPress={() => showData('table')}
-                title="Table"
-                color="#841584"
-                accessibilityLabel="Table"
-              />
+            <Menu 
+            options={[
+              {
+                title: 'Páginas',
+                isSelected: 'pages' === listData.typeData,
+                onPress: () => showData('pages'),
+              },
+              {
+                title: 'Buckets',
+                isSelected: 'buckets' === listData.typeData,
+                onPress: () => showData('buckets'),
+              },
+              {
+                title: 'Tabela',
+                isSelected: 'table' === listData.typeData,
+                onPress: () => showData('table'),
+              },
+            ]}/>
             </View>
           </View>
         </View>

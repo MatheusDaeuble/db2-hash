@@ -4,8 +4,9 @@ import { generatePrimeNumber } from '../utils/prime'
 
 export default class Hash {
 
-  constructor(tuples) {
-    this.prime = generatePrimeNumber(1000);
+  constructor(tuples, settings) {
+    this.settings = settings;
+    this.prime = settings.HASH_NUMBER; //generatePrimeNumber(hashNumber);
     this.table = this.generateHashTable(tuples);
   }
 
@@ -19,7 +20,9 @@ export default class Hash {
 
   generateHashTable = (tuples) => {
     const table = {};
-    this.generateHashPrototype(tuples).map(key => table[key] = new Bucket(key))
+    this.generateHashPrototype(tuples).map(key => 
+      table[key] = new Bucket(key, 0, this.settings)
+    )
     return table;
   }
 

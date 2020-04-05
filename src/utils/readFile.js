@@ -7,22 +7,9 @@ export const readTextFile = () => {
   const array = words.split('\n');
   createTupleKeys(array.length);
   return array;
-  //   const file = words;
-  //   let rawFile = new XMLHttpRequest();
-  //   let allText;
-  //   rawFile.open('GET', file, false);
-  //   rawFile.onreadystatechange = function() {
-  //     if (rawFile.readyState === 4) {
-  //       if (rawFile.status === 200 || rawFile.status === 0) {
-  //         allText = rawFile.responseText;
-  //       }
-  //     }
-  //   };
-  //   rawFile.send(null);
-  //   allText = allText.split('\n');
-  //   createTupleKeys(allText.length);
-  //   return allText;
 };
+
+export const dataSize = () =>  words.split('\n').length
 
 const formatTuple = words => {
   const tuples = [];
