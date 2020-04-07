@@ -33,4 +33,17 @@ const List = ({ data, onSelect, typeData }) =>
     />
   </View>
 
+const TableList = ({ data, onSelect, typeData }) =>
+  <View style={styles.listContainer}>
+    <FlatList
+      data={data}
+      initialNumToRender={20}
+      style={styles.list}
+      keyExtractor={(data) => data.key.toString()}
+      renderItem={({ item }) => <TableItem item={item} />}
+      numColumns={1}
+    />
+  </View>
+
+export { TableList }
 export default List;

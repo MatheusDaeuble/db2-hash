@@ -1,7 +1,7 @@
 
 export default class Bucket {
   constructor(key, level = 0, settings) {
-    this.key = level ? `${key.toString().split('_')[0]}_${level}` : key; 
+    this.key = level ? `${key.toString().split('_')[0]}_${level}` : key;
     this.level = level;
     this.content = {};
     this.space = settings.BUCKET_SIZE;
@@ -43,7 +43,7 @@ export default class Bucket {
 
   overflowCount = (count = 0) =>
     this.bucketOverflow ? this.bucketOverflow.overflowCount(count + 1) : count
-  
+
   tuples = () => Object.keys(this.content)
 
   pages = () => Object.values(this.content)
@@ -56,4 +56,12 @@ export default class Bucket {
   collisionCount = () => this.count - 1
 
   accessCost = () => this.level + 1
+
+  getOverflowBuckets = (overflow = this.bucketOverflow, content = []) => {
+    if(!overflow){
+      return content
+    }
+    content.push(this.bucketOverflow)
+    return this.getOverflowBuckets(overflow.bucketOverflow, content)
+  }
 }

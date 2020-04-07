@@ -11,10 +11,10 @@ const SIZE = dataSize()
 const Settings = ({navigation}) => {
 
   const [type, setType] = useState('Quantidade')
-  const [pageInput, setPageInput] = useState('')
+  const [pageInput, setPageInput] = useState('200')
   const [hashInput, setHashInput] = useState('1009')
-  const [bucketInput, setBucketInput] = useState('')
-  
+  const [bucketInput, setBucketInput] = useState('200')
+
   const doSimulator = () => {
     if (pageInput && hashInput && bucketInput) {
       const need = parseInt(SIZE/parseInt(pageInput))
@@ -30,22 +30,22 @@ const Settings = ({navigation}) => {
 
 
   return (
-    <ImageBackground 
-      source={{uri: image}} 
-      imageStyle={styles.image} 
-      resizeMode={'repeat'} 
+    <ImageBackground
+      source={{uri: image}}
+      imageStyle={styles.image}
+      resizeMode={'repeat'}
       style={styles.background} >
 
-      <Menu 
+      <Menu
       styleContainer={styles.options}
       styleOption={{}}
       options={[
-        { 
-          title: 'Quantidade',
+        {
+          title: 'Quantidade de paginas',
           isSelected: type==='Quantidade',
           onPress: () => setType('Quantidade')
         },
-        { 
+        {
           title: 'Tamanho',
           isSelected: type==='Tamanho',
           onPress: () => setType('Tamanho')
@@ -74,7 +74,7 @@ const Settings = ({navigation}) => {
         </View>
       </View>
       <TouchableOpacity style={styles.button} onPress={()=> doSimulator()}>
-        <Text style={styles.buttonText}>Iniciar</Text> 
+        <Text style={styles.buttonText}>Iniciar</Text>
       </TouchableOpacity>
     </ImageBackground>
   ) ;

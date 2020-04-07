@@ -18,10 +18,10 @@ const BucketItem = ({ item, onSelect }) =>
     </Text>
   </TouchableOpacity>
 
-const TableItem = ({ item, onSelect }) =>
+const TableItem = ({ item }) =>
   <TouchableOpacity
     style={styles.pageContainer}
-    onPress={() => onSelect(item.key)}>
+  >
     <Text style={styles.pageText}>
       {`${item.key}`}
     </Text>
@@ -29,15 +29,6 @@ const TableItem = ({ item, onSelect }) =>
       {`${item.value}`}
     </Text>
   </TouchableOpacity>
-
-
-
-// const PageItem = ({item, onSelect}) =>
-// <TouchableOpacity
-//   style={styles.pageContainer}
-//   onPress={()=> onSelect(item.value.key)}>
-//   <Text style={styles.pageText}>{'Página\n' + item.value.key}</Text>
-// </TouchableOpacity>
 
 export { BucketItem, TableItem }
 export default PageItem;
