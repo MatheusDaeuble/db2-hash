@@ -69,6 +69,7 @@ const Home = ({ navigation }) => {
             [disk.hash.get(search)] :
             bucket.tuplesPages()
         });
+        break;
       case 'overflows':
         const overflow = overflows.find(overflow => overflow.key === key);
         setListTuples({

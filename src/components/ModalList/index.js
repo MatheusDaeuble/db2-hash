@@ -22,6 +22,11 @@ const ModalList = ({ tuples, close, dataKey, whichData }) =>
                   <Text style={styles.page}>Bucket: {dataKey}</Text>
                   <BucketList tuples={tuples} />
                 </>
+              case 'overflows':
+                return <>
+                  <Text style={styles.page}>Bucket: {dataKey}</Text>
+                  <BucketList tuples={tuples} />
+                </>
               case 'pages':
                 return <>
                   <Text style={styles.page}>Page: {dataKey}</Text>

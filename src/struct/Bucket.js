@@ -61,7 +61,7 @@ export default class Bucket {
     if(!overflow){
       return content
     }
-    content.push(this.bucketOverflow)
+    content.push(overflow)
     return this.getOverflowBuckets(overflow.bucketOverflow, content)
   }
 }
