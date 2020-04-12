@@ -13,16 +13,16 @@ const Settings = ({navigation}) => {
   const [type, setType] = useState('Quantidade')
   const [pageInput, setPageInput] = useState('200')
   const [hashInput, setHashInput] = useState('1009')
-  const [bucketInput, setBucketInput] = useState('200')
+  //const [bucketInput, setBucketInput] = useState('200')
 
   const doSimulator = () => {
-    if (pageInput && hashInput && bucketInput) {
+    if (pageInput && hashInput /*&& bucketInput*/) {
       const need = parseInt(SIZE/parseInt(pageInput))
       const settings = {
         [SETTINGS.HASH_NUMBER]: parseInt(hashInput),
         [SETTINGS.PAGE_SIZE]: parseInt(type === 'Quantidade' ? need : pageInput),
         [SETTINGS.NUMBER_MAX_PAGES]: parseInt(type === 'Quantidade' ? pageInput : need),
-        [SETTINGS.BUCKET_SIZE]: parseInt(bucketInput),
+       // [SETTINGS.BUCKET_SIZE]: parseInt(bucketInput),
       }
       navigation.navigate('Simulador', {settings})
     }
@@ -38,17 +38,16 @@ const Settings = ({navigation}) => {
 
       <Menu
       styleContainer={styles.options}
-      styleOption={{}}
+      selected ={type}
+      onPress= {(value) => setType(value)}
       options={[
         {
-          title: 'Quantidade de paginas',
-          isSelected: type==='Quantidade',
-          onPress: () => setType('Quantidade')
+          label: 'Quantidade',
+          value: 'Quantidade',
         },
         {
-          title: 'Tamanho',
-          isSelected: type==='Tamanho',
-          onPress: () => setType('Tamanho')
+          label: 'Tamanho',
+          value: 'Tamanho',
         },
         ]}
       />
@@ -62,16 +61,16 @@ const Settings = ({navigation}) => {
         </View>
         <View style={styles.form}>
           <View style={styles.functionContainer}>
-          <Text style={styles.label}>{type}:  </Text>
+          <Text style={styles.label}>{type} Páginas:  </Text>
           <TextInput style={styles.input} value={pageInput} onChangeText={setPageInput}/>
           </View>
         </View>
-        <View style={styles.form}>
+        {/* <View style={styles.form}>
           <View style={styles.functionContainer}>
             <Text style={styles.label}>Tamanho do bucket:  </Text>
           <TextInput style={styles.input} value={bucketInput} onChangeText={setBucketInput}/>
           </View>
-        </View>
+        </View> */}
       </View>
       <TouchableOpacity style={styles.button} onPress={()=> doSimulator()}>
         <Text style={styles.buttonText}>Iniciar</Text>

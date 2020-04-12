@@ -38,15 +38,25 @@ const Home = ({ navigation }) => {
   })
 
   const doSearch = () => {
+    (!search &&  listData.typeData === 'table') && showData(listData.typeData)
     if (parseInt(search) > 0 && parseInt(search) <= tuples.length) {
       const { pageKey, bucketKey, accessCost } = disk.hash.get(search)
+      listData.typeData === 'table' ? doSearchTable(pageKey, search) : 
       openModal(
         listData.typeData === 'pages' ? pageKey : bucketKey,
         listData.typeData
       );
       setAccessCost(accessCost);
+      setSearch('')
     }
   };
+
+  doSearchTable = (pageKey, tupleKey) => {
+    setListData({
+      ...listData,
+      data: [{key: search, value: disk.content[pageKey].content[tupleKey]}],
+    })
+  }
 
   const openModal = (key, whichData = 'pages') => {
     switch (whichData) {
@@ -151,29 +161,29 @@ const Home = ({ navigation }) => {
           <View style={styles.infoContainer}>
             <Text style={styles.info}>Taxa de colisões: {disk.hash.collisionRate() + '%'}</Text>
             <Text style={styles.info}>Taxa de overflow: {disk.hash.overflowRate() + '%'}</Text>
+            <Text style={styles.info}>Numero de buckets: {`${disk.hash.keys().length} + (${disk.hash.overflowCount()} Overflows)`}</Text>
+            <Text style={styles.info}>Tamanho do bucket: {settings.BUCKET_SIZE}</Text>            
             <Text style={styles.info}>Numero de acessos ao disco: {accessCost}</Text>
             <View style={styles.buttonsContainer}>
               <Menu
+                selected ={listData.typeData}
+                onPress= {(value) => showData(value)}
                 options={[
                   {
-                    title: 'Páginas',
-                    isSelected: 'pages' === listData.typeData,
-                    onPress: () => showData('pages'),
+                    label: 'Páginas',
+                    value: 'pages',
                   },
                   {
-                    title: 'Buckets',
-                    isSelected: 'buckets' === listData.typeData,
-                    onPress: () => showData('buckets'),
+                    label: 'Buckets',
+                    value: 'buckets',
                   },
                   {
-                    title: 'Tabela',
-                    isSelected: 'table' === listData.typeData,
-                    onPress: () => showData('table'),
+                    label: 'Tabela',
+                    value: 'table',
                   },
                   {
-                    title: 'Overflows',
-                    isSelected: 'overflows' === listData.typeData,
-                    onPress: () => showData('overflows'),
+                    label: 'Overflows',
+                    value: 'overflows',
                   },
                 ]}
               />

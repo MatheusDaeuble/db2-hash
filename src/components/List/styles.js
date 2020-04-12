@@ -15,11 +15,6 @@ const styles = StyleSheet.create({
     width:'100%',
     padding:20,
   },
-
-  columns: {
-    justifyContent: 'space-between',
-  },
-  
 });
 
 export default styles;

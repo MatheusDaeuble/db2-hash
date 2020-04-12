@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import styles from './styles'
 
 const PageItem = ({ item, onSelect }) =>
@@ -19,16 +19,11 @@ const BucketItem = ({ item, onSelect }) =>
   </TouchableOpacity>
 
 const TableItem = ({ item }) =>
-  <TouchableOpacity
-    style={styles.pageContainer}
-  >
-    <Text style={styles.pageText}>
-      {`${item.key}`}
+  <View style={styles.pageContainer}>
+    <Text style={styles.tableText}>
+      {`${item.key} - ${item.value}`}
     </Text>
-    <Text style={styles.pageText}>
-      {`${item.value}`}
-    </Text>
-  </TouchableOpacity>
+  </View>
 
 export { BucketItem, TableItem }
 export default PageItem;

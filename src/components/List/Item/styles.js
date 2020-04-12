@@ -17,6 +17,11 @@ const styles = StyleSheet.create({
     lineHeight:30
   },
 
+  tableText:{
+    fontSize:20,
+    lineHeight:30
+  },
+
 });
 
 export default styles;

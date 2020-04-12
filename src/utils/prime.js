@@ -1,5 +1,5 @@
 export const generatePrimeNumber = (number) => {
-  while (this.isPrime(number)) 
+  while (!isPrime(number)) 
     number++;
   return number
 }

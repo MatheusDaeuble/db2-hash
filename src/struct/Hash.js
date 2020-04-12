@@ -6,8 +6,9 @@ export default class Hash {
 
   constructor(tuples, settings) {
     this.settings = settings;
-    this.prime = settings.HASH_NUMBER; //generatePrimeNumber(hashNumber);
+    this.prime = generatePrimeNumber(settings.HASH_NUMBER);
     this.table = this.generateHashTable(tuples);
+    console.log(this.prime)
   }
 
   function = (key) => key % this.prime;
@@ -32,6 +33,7 @@ export default class Hash {
       const key = this.function(tuple.key);
       if (!prototype.includes(key)) return prototype.push(key);
     })
+    this.settings.BUCKET_SIZE = parseInt(tuples.length/prototype.length)
     return prototype;
   }
 

@@ -31,7 +31,6 @@ const List = ({ data, onSelect, typeData }) =>
         </>
       )}
       numColumns={3}
-      columnWrapperStyle={styles.columns}
     />
   </View>
 
