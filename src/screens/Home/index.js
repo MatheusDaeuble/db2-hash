@@ -26,6 +26,7 @@ const Home = ({ navigation }) => {
   const disk = useMemo(() => new Disk(tuples, settings), []);
   const pages = useMemo(() => formatObjectToArray(disk.content), []);
   const buckets = useMemo(() => disk.hash.buckets(), []);
+  const overflows = useMemo(() => buckets.flatMap(bucket => bucket.getOverflowBuckets()), []);
 
   const [listData, setListData] = useState({
     typeData: 'pages',
@@ -66,8 +67,16 @@ const Home = ({ navigation }) => {
           key,
           tuples: search ?
             [disk.hash.get(search)] :
-            bucket.tuplesPages(),
-          bucketsOverflow: bucket.getOverflowBuckets()
+            bucket.tuplesPages()
+        });
+      case 'overflows':
+        const overflow = overflows.find(overflow => overflow.key === key);
+        setListTuples({
+          whichData,
+          key,
+          tuples: search ?
+            [disk.hash.get(search)] :
+            overflow.tuplesPages(),
         });
         break;
       default:
@@ -107,6 +116,17 @@ const Home = ({ navigation }) => {
           selectFunction: () => { }
         })
         setShowTable(true)
+        break;
+      case 'overflows':
+        setListData({
+          typeData,
+          data: overflows,
+          selectFunction: overflowKey => {
+            setSearch('');
+            openModal(overflowKey, 'overflows');
+          }
+        })
+        setShowTable(false)
         break;
       default:
         break;
@@ -148,6 +168,11 @@ const Home = ({ navigation }) => {
                     title: 'Tabela',
                     isSelected: 'table' === listData.typeData,
                     onPress: () => showData('table'),
+                  },
+                  {
+                    title: 'Overflows',
+                    isSelected: 'overflows' === listData.typeData,
+                    onPress: () => showData('overflows'),
                   },
                 ]}
               />

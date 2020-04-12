@@ -21,6 +21,8 @@ const List = ({ data, onSelect, typeData }) =>
                   return <PageItem item={item} onSelect={onSelect} />
                 case 'table':
                   return <TableItem item={item} onSelect={onSelect} />
+                case 'overflows':
+                  return <BucketItem item={item} onSelect={onSelect} />
                 default:
                   return ''
               }
