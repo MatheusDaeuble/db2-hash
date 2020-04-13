@@ -12,7 +12,7 @@ const Settings = ({navigation}) => {
 
   const [type, setType] = useState('Quantidade')
   const [pageInput, setPageInput] = useState('200')
-  const [hashInput, setHashInput] = useState('1009')
+  const [hashInput, setHashInput] = useState('479')
   //const [bucketInput, setBucketInput] = useState('200')
 
   const doSimulator = () => {

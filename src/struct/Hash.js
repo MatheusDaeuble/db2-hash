@@ -6,7 +6,7 @@ export default class Hash {
 
   constructor(tuples, settings) {
     this.settings = settings;
-    this.prime = generatePrimeNumber(settings.HASH_NUMBER);
+    this.prime = settings.HASH_NUMBER //generatePrimeNumber(settings.HASH_NUMBER);
     this.table = this.generateHashTable(tuples);
     console.log(this.prime)
   }

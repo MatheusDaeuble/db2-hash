@@ -7,7 +7,7 @@ export const getRandomTupleKey = () => tupleKeys.pop()
 export const getRandomPageKey = () => pageKeys.pop()
 
 const createRandomKeys = (size, storage) => {
-  for (let i=0; i<size; i++) 
+  for (let i=0; i<=size; i++) 
     storage.push(i);
   shuffle(storage);
 }
