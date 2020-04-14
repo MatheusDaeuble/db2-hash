@@ -13,7 +13,7 @@ const Home = ({ navigation }) => {
   const settings = navigation.getParam('settings')
   const [showModal, setShowModal] = useState(false);
   const [showTable, setShowTable] = useState(false);
-  const [accessCost, setAccessCost] = useState('0');
+  const [accessCost, setAccessCost] = useState(-1);
   const [search, setSearch] = useState('');
   const [listTuples, setListTuples] = useState({
     whichData: '',
@@ -163,7 +163,7 @@ const Home = ({ navigation }) => {
             <Text style={styles.info}>Taxa de overflow: {disk.hash.overflowRate() + '%'}</Text>
             <Text style={styles.info}>Numero de buckets: {`${disk.hash.keys().length} + (${disk.hash.overflowCount()} Overflows)`}</Text>
             <Text style={styles.info}>Tamanho do bucket: {settings.BUCKET_SIZE}</Text>            
-            <Text style={styles.info}>Numero de acessos ao disco: {accessCost}</Text>
+            <Text style={styles.info}>Numero de acessos ao disco: {parseInt(accessCost)+1}</Text>
             <View style={styles.buttonsContainer}>
               <Menu
                 selected ={listData.typeData}

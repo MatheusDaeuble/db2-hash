@@ -17,15 +17,15 @@ export default class Bucket {
     } else this.overflow(pageKey, tupleKey);
   }
 
-  get = (tuplaKey) =>
+  get = (tuplaKey, access=1) =>
     this.content[tuplaKey] ?
       {
         bucketKey: this.key,
         pageKey: this.content[tuplaKey],
         tuplaKey,
-        accessCost: this.accessCost()
+        accessCost: access
       } :
-      this.bucketOverflow.get(tuplaKey)
+      this.bucketOverflow.get(tuplaKey, access+1)
 
   size = () => Object.keys(this.content).length;
 
@@ -54,8 +54,6 @@ export default class Bucket {
   }
 
   collisionCount = () => this.count - 1
-
-  accessCost = () => this.level + 1
 
   getOverflowBuckets = (overflow = this.bucketOverflow, content = []) => {
     if(!overflow){
