@@ -7,6 +7,7 @@ import Menu from '../../components/Menu';
 import Table from '../../struct/Table';
 import { formatObjectToArray } from '../../utils/fomart';
 import styles from './styles';
+import Parser from '../../struct/Parser';
 
 const Home = ({ navigation }) => {
 
@@ -21,6 +22,13 @@ const Home = ({ navigation }) => {
     tuples: []
   })
 
+  const parser = useMemo(() => new Parser(`
+    create table departamento (
+      cod_dep int not null, nome varchar(30) not null,
+      constraint pk_dep
+        primary key(cod_dep)
+    )
+  `), []);
   const table = useMemo(() => new Table(), []);
   const tuples = useMemo(() => table.content, []);
   const disk = useMemo(() => new Disk(tuples, settings), []);
@@ -41,7 +49,7 @@ const Home = ({ navigation }) => {
     (!search &&  listData.typeData === 'table') && showData(listData.typeData)
     if (parseInt(search) > 0 && parseInt(search) <= tuples.length) {
       const { pageKey, bucketKey, accessCost } = disk.hash.get(search)
-      listData.typeData === 'table' ? doSearchTable(pageKey, search) : 
+      listData.typeData === 'table' ? doSearchTable(pageKey, search) :
       openModal(
         listData.typeData === 'pages' ? pageKey : bucketKey,
         listData.typeData
@@ -162,7 +170,7 @@ const Home = ({ navigation }) => {
             <Text style={styles.info}>Taxa de colisões: {disk.hash.collisionRate() + '%'}</Text>
             <Text style={styles.info}>Taxa de overflow: {disk.hash.overflowRate() + '%'}</Text>
             <Text style={styles.info}>Numero de buckets: {`${disk.hash.keys().length} + (${disk.hash.overflowCount()} Overflows)`}</Text>
-            <Text style={styles.info}>Tamanho do bucket: {settings.BUCKET_SIZE}</Text>            
+            <Text style={styles.info}>Tamanho do bucket: {settings.BUCKET_SIZE}</Text>
             <Text style={styles.info}>Numero de acessos ao disco: {parseInt(accessCost)+1}</Text>
             <View style={styles.buttonsContainer}>
               <Menu

@@ -1,0 +1,22 @@
+export const departaments = `
+  Administrativo
+  TI
+  Atacado
+  Auditoria
+  Comercial
+  Credito
+  Legal
+  Manutenção
+  Marketing
+  Sales
+  RH
+  Varejo
+  Operações
+  Seguros
+  Tesouraria
+  Fiscal
+  Garantia
+  Sanitaria
+  Festas
+  Money
+`
