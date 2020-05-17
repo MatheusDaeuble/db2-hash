@@ -26,9 +26,15 @@ export default class Parser {
   }
 
   createTable = (tableName, fields, primaryKeyColumn) => {
-    fields = this.findTableColumns(fields)
-    const table = new Table(tableName, fields[1], primaryKeyColumn)
-    return console.log(`criar tabela de nome ${tableName} com os campos ${fields}`)
+
+    console.warn(fields)
+    const columns = this.findTableColumns(fields).filter(field => field !== primaryKeyColumn.trim())
+    console.warn(columns)
+    console.log(`criar tabela de nome ${tableName} com os campos ${columns}`)
+    const table = new Table(tableName, columns, primaryKeyColumn)
+    console.log(table)
+    return table
+
   }
 
   findTableColumns = (fields) => {
