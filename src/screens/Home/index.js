@@ -29,17 +29,8 @@ const Home = ({ navigation }) => {
   //       primary key(cod_dep)
   //   )
   // `), []);
-  const parser2 = useMemo(() => new Parser(`
-    create table empregado (
-      matri int not null,nome varchar(60) not null,salario decimal(16,2) not null,
-      lotacao int not null,
-      constraint pk_matri
-        primary key(matri),
-      constraint fk_lotacao
-        foreign key(lotacao)
-        references departamento
-    )
-  `), []);
+
+
   const table = useMemo(() => new Table(), []);
   const tuples = useMemo(() => table.content, []);
   const disk = useMemo(() => new Disk(tuples, settings), []);

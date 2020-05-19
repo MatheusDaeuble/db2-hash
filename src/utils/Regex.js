@@ -12,11 +12,9 @@ const Regex = () =>
     /\s*(create table)\s*([a-zA-Z]+)\s*\(\s*([a-zA-Z_\s*,(0-9)]+)\s*constraint\s*([a-zA-Z_]+)\s*primary\s*key\(\s*([a-zA-Z_\s*,]+)\s*\)\s*,\s*constraint\s*([a-zA-Z_]+)\s*foreign\s*key\(\s*([a-zA-Z_]+)\)\s*references\s*([a-zA-Z_]+)\s*\)/g
   ]
 
-export const createTableSubRegex = /\s*([a-zA-Z_]+)\s*(varchar|int)\(?([0-9]+)?\)?\s*([a-zA-Z ]+)?$/gm
+export const createTableSubRegex = /\s*([a-zA-Z_]+)\s*(varchar|int|decimal)?\(?([0-9\s*,]+)?\)?([not\s*null]+)?\s*,/gm
 
 export const testQuerie = (str, regex) => {
-  console.log(str)
-  console.log(regex)
   let groups = []
   let group
   while ((m = regex.exec(str)) !== null) {

@@ -36,11 +36,22 @@ const formatTuple = (lines, columns, pk, fk = '') => {
 const setTupleColumnValue = (columns, line) => {
   let response = {}
   columns.map((column, index) => {
-    console.log(column)
-    console.log(line)
-    console.log(index)
-    response[column] = line[index]
+    response[column.name] = treatTypeValue(column.type, line[index])
   })
   return response
 }
+
+const treatTypeValue = (type, value) => {
+  switch (type) {
+    case 'int':
+      return parseInt(value)
+    case 'varchar':
+      return value
+    case 'decimal':
+      return parseFloat(value)
+    default:
+      break;
+  }
+}
+
 export default returnTableContent
