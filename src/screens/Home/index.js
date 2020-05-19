@@ -22,11 +22,22 @@ const Home = ({ navigation }) => {
     tuples: []
   })
 
-  const parser = useMemo(() => new Parser(`
-    create table departamento (
-      cod_dep int not null, nome varchar(30) not null
-      constraint pk_dep
-        primary key(cod_dep)
+  // const parser = useMemo(() => new Parser(`
+  //   create table departamento (
+  //     cod_dep int not null, nome varchar(30) not null,
+  //     constraint pk_dep
+  //       primary key(cod_dep)
+  //   )
+  // `), []);
+  const parser2 = useMemo(() => new Parser(`
+    create table empregado (
+      matri int not null,nome varchar(60) not null,salario decimal(16,2) not null,
+      lotacao int not null,
+      constraint pk_matri
+        primary key(matri),
+      constraint fk_lotacao
+        foreign key(lotacao)
+        references departamento
     )
   `), []);
   const table = useMemo(() => new Table(), []);
@@ -46,14 +57,14 @@ const Home = ({ navigation }) => {
   })
 
   const doSearch = () => {
-    (!search &&  listData.typeData === 'table') && showData(listData.typeData)
+    (!search && listData.typeData === 'table') && showData(listData.typeData)
     if (parseInt(search) > 0 && parseInt(search) <= tuples.length) {
       const { pageKey, bucketKey, accessCost } = disk.hash.get(search)
       listData.typeData === 'table' ? doSearchTable(pageKey, search) :
-      openModal(
-        listData.typeData === 'pages' ? pageKey : bucketKey,
-        listData.typeData
-      );
+        openModal(
+          listData.typeData === 'pages' ? pageKey : bucketKey,
+          listData.typeData
+        );
       setAccessCost(accessCost);
       setSearch('')
     }
@@ -62,7 +73,7 @@ const Home = ({ navigation }) => {
   doSearchTable = (pageKey, tupleKey) => {
     setListData({
       ...listData,
-      data: [{key: search, value: disk.content[pageKey].content[tupleKey]}],
+      data: [{ key: search, value: disk.content[pageKey].content[tupleKey] }],
     })
   }
 
@@ -171,11 +182,11 @@ const Home = ({ navigation }) => {
             <Text style={styles.info}>Taxa de overflow: {disk.hash.overflowRate() + '%'}</Text>
             <Text style={styles.info}>Numero de buckets: {`${disk.hash.keys().length} + (${disk.hash.overflowCount()} Overflows)`}</Text>
             <Text style={styles.info}>Tamanho do bucket: {settings.BUCKET_SIZE}</Text>
-            <Text style={styles.info}>Numero de acessos ao disco: {parseInt(accessCost)+1}</Text>
+            <Text style={styles.info}>Numero de acessos ao disco: {parseInt(accessCost) + 1}</Text>
             <View style={styles.buttonsContainer}>
               <Menu
-                selected ={listData.typeData}
-                onPress= {(value) => showData(value)}
+                selected={listData.typeData}
+                onPress={(value) => showData(value)}
                 options={[
                   {
                     label: 'Páginas',
