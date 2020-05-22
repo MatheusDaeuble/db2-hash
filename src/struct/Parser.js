@@ -3,12 +3,13 @@ import Table from './Table';
 
 export default class Parser {
 
-  constructor(setence) {
-    this.action = this.searchAction(this.format(setence));
+  constructor() {
   }
 
-  format = (setence) => {
-    return Regex().map(r => r.exec(setence)).filter(el => el !== null)[0]
+  processSQL = (sql) => this.searchAction(this.format(sql));
+
+  format = (sql) => {
+    return Regex().map(r => r.exec(sql)).filter(el => el !== null)[0]
   }
 
   searchAction = (options) => {
@@ -18,19 +19,27 @@ export default class Parser {
           return this.select(options[2], options[4], [options[6], options[7], options[8]])
         return this.select(options[2], options[4])
       case 'create table':
-        return console.log(this.createTable(options[2], options[3], options[4]))
+        return this.createTable({
+          tableName: options[2],
+          columns: options[3],
+          primaryKeyColumn: options[5],
+          foreignKey: options[7],
+          tableReferences: options[8]
+        })
       default:
         break
     }
   }
 
-  createTable = (tableName, fields, primaryKeyColumn) => new Table(tableName, this.getColumns(fields, primaryKeyColumn), primaryKeyColumn)
+  createTable = ({ tableName, columns, primaryKeyColumn, foreignKey, tableReferences }) => {
+    return new Table(tableName, this.getColumns(columns, primaryKeyColumn), primaryKeyColumn, foreignKey, tableReferences )
+  }
 
-  getColumns = (fields, primaryKeyColumn) => this.findTableColumns(fields).filter(column => !primaryKeyColumn.trim().includes(column.name))
+  getColumns = (columns, primaryKeyColumn) => this.findTableColumns(columns).filter(column => !primaryKeyColumn.trim().includes(column.name))
 
-  findTableColumns = (fields,) => {
-    fields = testQuerie(fields, createTableSubRegex)
-    return this.turnRegexToColumnInfo(fields)
+  findTableColumns = (columns, ) => {
+    columns = testQuerie(columns, createTableSubRegex)
+    return this.turnRegexToColumnInfo(columns)
   }
 
   turnRegexToColumnInfo = (columns) =>

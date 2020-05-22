@@ -7,11 +7,11 @@ import TestScreen from './screens/Test';
 
 const AppNavigator = createStackNavigator({
   'Simulador': HomeScreen,
-  'Configurações': TestScreen,
+  'Configurações': SettingsScreen,
   'Test': TestScreen
 },
 {
-  initialRouteName:'Configurações'
+  initialRouteName:'Test'
 }
 );
 

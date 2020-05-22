@@ -8,7 +8,6 @@ export default class Hash {
     this.settings = settings;
     this.prime = settings.HASH_NUMBER //generatePrimeNumber(settings.HASH_NUMBER);
     this.table = this.generateHashTable(tuples);
-    console.log(this.prime)
   }
 
   function = (key) => key % this.prime;
@@ -21,7 +20,7 @@ export default class Hash {
 
   generateHashTable = (tuples) => {
     const table = {};
-    this.generateHashPrototype(tuples).map(key => 
+    this.generateHashPrototype(tuples).map(key =>
       table[key] = new Bucket(key, 0, this.settings)
     )
     return table;
@@ -60,12 +59,12 @@ export default class Hash {
 
   collisionRate = () => {
     const collisionRateByBucket = this.calcCollisionRateByBucket()
-    return ((collisionRateByBucket.reduce((sum, bucketRate) => 
+    return ((collisionRateByBucket.reduce((sum, bucketRate) =>
       sum + bucketRate) / collisionRateByBucket.length ) * 100).toFixed(2)
   }
 
   calcCollisionRateByBucket = () =>
-    this.keys().map(key => 
+    this.keys().map(key =>
       parseInt(this.table[key].collisionCount())/parseInt(this.table[key].size())
     )
 }

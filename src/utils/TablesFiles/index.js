@@ -2,7 +2,7 @@ import { departaments } from './departaments'
 import { employers } from './employers'
 import { getRandomTupleKey, shuffle, createTupleKeys } from '../random';
 
-const returnTableContent = (tableName, columns, pk, fk = '') => {
+const returnTableContent = (tableName, columns, pk, fk = '', tableReferences = '') => {
   // todo:
   /*
     criar um arquivo unico para pegar
@@ -12,7 +12,9 @@ const returnTableContent = (tableName, columns, pk, fk = '') => {
     case 'departamento':
       return formatTuple(readTextFile(departaments), columns, pk)
     case 'empregado':
-      return formatTuple(readTextFile(employers), columns, pk)
+      return formatTuple(readTextFile(employers), columns, pk, fk, tableReferences)
+    case 'dependentes':
+      return formatTuple(readTextFile(employers), columns, pk, fk, tableReferences)
     default:
       return `didn't work`
   }
@@ -24,21 +26,30 @@ export const readTextFile = (lines) => {
   return array;
 };
 // data name é o nome da informação que vai ta na tabela pq ainda n pensei em uma maneira boa pra fazer dinamico depedendo do numero
-const formatTuple = (lines, columns, pk, fk = '') => {
+const formatTuple = (lines, columns, pk, fk = '', tableReferences) => {
   const tuples = [];
   lines.map(line => tuples.push({
     [pk]: getRandomTupleKey(),
-    ...setTupleColumnValue(columns, line.split('|'))
+    ...setTupleColumnValue(columns, line.split('|'), fk, tableReferences)
   }));
   return shuffle(tuples);
 }
 
-const setTupleColumnValue = (columns, line) => {
+const setTupleColumnValue = (columns, line, fk, tableReferences) => {
   let response = {}
   columns.map((column, index) => {
     response[column.name] = treatTypeValue(column.type, line[index])
+    if(tableReferences)
+      response[`${tableReferences}_id`] = generateForeignKey(tableReferences)
   })
+
   return response
+}
+
+const generateForeignKey = (tableRefences) => {
+  if(tableRefences === 'departamento')
+    return Math.floor((Math.random() * 20) + 1);
+  Math.floor((Math.random() * 10000) + 1);
 }
 
 const treatTypeValue = (type, value) => {
