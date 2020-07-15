@@ -7,7 +7,7 @@ export default class Bucket {
     this.space = settings.BUCKET_SIZE;
     this.bucketOverflow = null;
     this.count = 0;
-    this.settings = settings
+    this.settings = settings;
   }
 
   add = (pageKey, tupleKey) => {
